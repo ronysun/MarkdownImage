@@ -1,0 +1,24 @@
+stages:
+  - deploy
+
+deploy_develop_job:
+  stage: deploy
+  only:
+    - develop
+  script:
+    - sudo \cp -r site_pack/portal/static/* /usr/share/portal/vue-static/
+    - sudo systemctl restart t2cloud-portal
+  tags:
+    - portal-develop
+
+deploy_staging_job:
+  stage: deploy
+  only:
+    - staging
+  script:
+    - sudo rm -rf /usr/share/portal/vue-static/
+    - sudo mkdir -p /usr/share/portal/vue-static/
+    - sudo \cp -r site_pack/portal/static/* /usr/share/portal/vue-static/
+    - sudo systemctl restart t2cloud-portal
+  tags:
+    - portal-staging
